@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Mantenimiento de Tractores | Centro Agropecuario</title>
+<meta name="description" content="Control de mantenimiento preventivo de maquinaria agrícola">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="app-header__mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 7v5l3 3"/>
+      </svg>
+    </div>
+    <div class="app-header__text">
+      <p class="app-header__eyebrow">Taller de maquinaria | Ficha: 3172313</p>
+      <h1 class="app-header__title">Control de mantenimiento</h1>
+    </div>
+  </header>
+
+  <!-- Las 4 tarjetas se generan dinámicamente en app.js a partir
+       del arreglo `units`. Ver ese archivo para editar horas,
+       estado o datos de cada tractor. -->
+  <main class="fleet" id="fleet">
+    <noscript>
+      <p class="fleet-note">Activa JavaScript para ver el estado de los tractores.</p>
+    </noscript>
+  </main>
+
+  <!-- ============ MODAL: PRIORIDAD DE MANTENIMIENTO ============
+       Paso intermedio: se abre al presionar "Ver manual" en una tarjeta.
+       Su contenido se genera en app.js según las horas del tractor
+       contra la tabla de mantenimientos de su modelo. -->
+  <div class="modal-overlay" id="priorityModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="priorityTitle">
+
+      <header class="modal__header">
+        <div>
+          <p class="modal__eyebrow" id="priorityUnitLabel">Unidad 01</p>
+          <h2 class="modal__title" id="priorityTitle">Prioridad de mantenimiento</h2>
+        </div>
+        <button class="modal__close" id="priorityCloseBtn" aria-label="Cerrar panel" type="button">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M6 6l12 12M18 6L6 18"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="modal__viewer">
+        <div id="priorityBody">
+          <!-- Contenido generado dinámicamente por app.js:
+               getMaintenanceStatus() + renderPriorityBody() -->
+        </div>
+      </div>
+
+      <footer class="modal__controls modal__controls--single">
+        <button class="unit-card__cta" id="continueToManualBtn" type="button">
+          Continuar a manual
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M9 6l6 6-6 6"/>
+          </svg>
+        </button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ============ MODAL: VISOR DE MANUAL ============ -->
+  <div class="modal-overlay" id="manualModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
+      <header class="modal__header">
+        <div>
+          <p class="modal__eyebrow" id="modalUnitLabel">Unidad 01</p>
+          <h2 class="modal__title" id="modalTitle">Manual &mdash; Tractor</h2>
+        </div>
+        <button class="modal__close" id="modalCloseBtn" aria-label="Cerrar manual" type="button">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M6 6l12 12M18 6L6 18"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="modal__viewer">
+        <div class="manual-page" id="manualPage">
+          <!-- La página del manual (imagen escaneada) se inyecta desde app.js -->
+        </div>
+      </div>
+
+      <footer class="modal__controls">
+        <button class="modal__nav-btn" id="prevPageBtn" type="button" aria-label="Página anterior">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M15 6l-6 6 6 6"/>
+          </svg>
+        </button>
+
+        <p class="modal__page-count">
+          Página <span id="pageCurrent">1</span> de <span id="pageTotal">1</span>
+        </p>
+
+        <button class="modal__nav-btn" id="nextPageBtn" type="button" aria-label="Página siguiente">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M9 6l6 6-6 6"/>
+          </svg>
+        </button>
+      </footer>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
