@@ -1,5 +1,5 @@
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbwNdDtCJt7JmGnOnC8DQ0KENZ_mbcnJTx9kO5MMzp8F_6VECn8dwBfv-kmi1pWilSzKkQ/exec";
+  "https://script.google.com/macros/s/AKfycbySoChjVgiZ4cAQb0wx_Bsff9TIA1EOQIihyxqRS71TtSE5jYet7kPLco2lr7MB9e-VEg/exec";
 //Paginas del modelo TT4.90
 const paginasModeloA = [];
 for(let i = 1; i <= 51; i++){
