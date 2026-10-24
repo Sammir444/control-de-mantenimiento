@@ -1,89 +1,72 @@
+import { models } from "./models.js";
+
 const API_URL =
   "https://script.google.com/macros/s/AKfycbySoChjVgiZ4cAQb0wx_Bsff9TIA1EOQIihyxqRS71TtSE5jYet7kPLco2lr7MB9e-VEg/exec";
-//Paginas del modelo TT4.90
-const paginasModeloA = [];
-for(let i = 1; i <= 51; i++){
-  paginasModeloA.push({src: `TT4.90/pag-${i}.jpeg`,
-    caption: `Página ${i} — Manual de mantenimiento TT4.90`})
-}
-//Paginas del modelo Kubota MX5100
-const paginasModeloB = [];
-for(let i = 1; i <= 27; i++){
-  paginasModeloB.push({src: `Kubota MX5100/pag-${i}.jpeg`,
-  caption: `Página ${i} — Manual de mantenimiento Kubota MX5100`})
-}
 
-const models = {
-  A: {
-    label: "New Holland",
-    fullName: "TT 4.90",
-    image: "TT4.90/Tractor.jpg",
-    pages: paginasModeloA,
-    maintenanceTasks: [
-      { hours: 50, name: "Engrase general de puntos de pivote, tracción 4WD y brazo de levante", page: "26-31" },
-      { hours: 50, name: "Verificar holgura del pedal de freno y embrague", page: "26-31" },
-      { hours: 50, name: "Limpiar/purgar predepurador del filtro de aire", page: "26-31" },
-      { hours: 50, name: "Comprobar torque de tuercas de ruedas", page: "26-31" },
-
-      { hours: 300, name: "Cambio de aceite del motor y filtro", page: "33-38" },
-      { hours: 300, name: "Reemplazo de filtros de combustible", page: 7 },
-      { hours: 300, name: "Limpieza del elemento primario del filtro de aire", page: "33-38" },
-      { hours: 300, name: "Inspección de la correa del alternador/ventilador", page: "33-38" },
-
-      { hours: 600, name: "Reemplazo del filtro hidráulico y de transmisión", page: "39-41" },
-      { hours: 600, name: "Ajuste de holgura de taqués (válvulas)", page: "39-41" },
-      { hours: 600, name: "Limpieza del respiradero de la transmisión", page: "39-41" },
-      { hours: 600, name: "Revisión y engrase de rodamientos del eje delantero", page: "39-41" },
-
-      { hours: 1200, name: "Cambio total de aceite hidráulico y transmisión", page: "41-43" },
-      { hours: 1200, name: "Cambio de aceite del diferencial y mandos finales (4WD)", page: "41-43" },
-      { hours: 1200, name: "Reemplazo del filtro de seguridad interno del aire", page: "41-43" },
-      { hours: 1200, name: "Reemplazo del líquido refrigerante del radiador", page: "41-43" },
-      { hours: 1200, name: "Inspección del sistema eléctrico y batería", page: "41-43" },
-    ],
-  },
-  B: {
-    label: "Kubota",
-    fullName: "Kubota MX5100",
-    image: "Kubota MX5100/Tractor.jpg",
-    pages: paginasModeloB,
-    maintenanceTasks: [
-      { hours: 50, name: "Engrase general: dirección, eje 4WD, enganche de tres puntos", page: "10-11" },
-      { hours: 50, name: "Comprobar presión y estado de neumáticos", page: "10-11" },
-      { hours: 50, name: "Ajustar tensión de correa del alternador y A/C", page: "10-11" },
-
-      { hours: 100, name: "Cambio de aceite de motor y filtro", page: "12-16" },
-      { hours: 100, name: "Limpieza del filtro de aire (elemento exterior)", page: "12-16" },
-      { hours: 100, name: "Comprobar nivel de electrolito de la batería", page: "12-16" },
-
-      { hours: 200, name: "Reemplazo del filtro de combustible/separador de agua", page: "16-18" },
-      { hours: 200, name: "Reemplazo del filtro hidráulico y transmisión", page: "16-18" },
-      { hours: 200, name: "Ajuste de tensión de pedales de freno y embrague", page: "16-18" },
-      { hours: 200, name: "Revisión de alineamiento de ruedas delanteras", page: "16-18" },
-
-      { hours: 400, name: "Cambio de aceite del eje delantero y mandos finales (4WD)", page: 19 },
-      { hours: 400, name: "Reemplazo del filtro de aire primario", page: 19 },
-
-      { hours: 500, name: "Inspección de mangueras del sistema de enfriamiento", page: 20 },
-      { hours: 500, name: "Limpieza/reemplazo de filtros de A/C de cabina", page: 20 },
-
-      { hours: 800, name: "Cambio total del fluido hidráulico/transmisión", page: 20 },
-      { hours: 800, name: "Reemplazo del elemento secundario del filtro de aire", page: 20 },
-      { hours: 800, name: "Cambio completo del líquido refrigerante", page: 17 },
-      { hours: 800, name: "Reemplazo de mangueras de radiador/dirección asistida", page: 20 },
-
-      { hours: 1000, name: "Ajuste de holgura de válvulas del motor", page: "21-27" },
-      { hours: 1000, name: "Verificación de presión de inyectores de combustible", page: "21-27" },
-    ],
-  },
-};
-
-// El Sheet identifica cada fila con un texto como "TT 4.90 - Unidad 1".
-// Este mapa traduce ese nombre real de modelo a la clave interna ("A"/"B")
+// Los nombres son los prefijos usados en el campo `id` del Sheet.
 const MODEL_NAME_TO_KEY = {
   "NEW HOLLAND": "A",
   "KUBOTA": "B",
+  "CASE JX95": "C",
+  "CASE JX 95": "C",
+  "JOHN DEERE 6415": "D",
+  "MASSEY FERGUSON 4290": "E",
+  "MASSEY FERGUSON 290": "F",
+  "YTO LX804": "G",
 };
+
+const LOCAL_UNITS = [
+  {
+    id: "john-deere-6415-01",
+    model: "D",
+    unitLabel: "Registro local · no sincronizado",
+    hoursUsed: 24,
+    lastServiceHours: 4746.7,
+    currentHours: 4770.7,
+    registered: true,
+    localOnly: true,
+  },
+  {
+    id: "massey-ferguson-4290-01",
+    model: "E",
+    unitLabel: "Registro local · no sincronizado",
+    hoursUsed: 24,
+    lastServiceHours: 3860.4,
+    currentHours: 3884.4,
+    registered: true,
+    localOnly: true,
+  },
+  {
+    id: "massey-ferguson-290-01",
+    model: "F",
+    unitLabel: "Registro local · no sincronizado",
+    hoursUsed: 24,
+    lastServiceHours: 6642.4,
+    currentHours: 6666.4,
+    registered: true,
+    localOnly: true,
+  },
+  {
+    id: "case-jx95-01",
+    model: "C",
+    unitLabel: "Registro local · no sincronizado",
+    hoursUsed: 24,
+    lastServiceHours: 4010.3,
+    currentHours: 4034.3,
+    registered: true,
+    localOnly: true,
+  },
+  {
+    id: "yto-lx804-01",
+    model: "G",
+    unitLabel: "Registro local · no sincronizado",
+    hoursUsed: 24,
+    lastServiceHours: 3996.4,
+    currentHours: 4020.4,
+    registered: true,
+    localOnly: true,
+  },
+];
 
 // units se llena en tiempo de ejecución con loadFleetData()
 let units = [];
@@ -99,37 +82,46 @@ function slugify(text) {
 
 /** Convierte una fila cruda del Sheet a la forma interna que usa la UI. */
 function mapApiRowToUnit(row) {
-  // 1. Limpiamos el texto que viene del sheet (ej: "NEW HOLLAND S62")
-  const idStr = String(row.id).trim(); 
-  
-  // 2. Buscamos el último espacio para separar la marca del número
-  const lastSpaceIndex = idStr.lastIndexOf(" ");
-  
-  // Si por alguna razón no hay espacios, evitamos que el código colapse
-  if (lastSpaceIndex === -1) {
-    console.warn(`Formato inválido en el Sheet: "${idStr}" (fila ignorada)`);
+  const idStr = String(row.id || "").trim();
+  const normalizedId = idStr.toUpperCase();
+  const modelName = Object.keys(MODEL_NAME_TO_KEY)
+    .sort((a, b) => b.length - a.length)
+    .find((name) => normalizedId === name || normalizedId.startsWith(`${name} `));
+
+  if (!modelName) {
+    console.warn(`Modelo no reconocido en el Sheet: "${idStr}" (fila ignorada)`, row);
     return null;
   }
 
-  // 3. Cortamos el texto
-  const modelName = idStr.substring(0, lastSpaceIndex).trim(); // Ej: "NEW HOLLAND"
-  const unitNumber = idStr.substring(lastSpaceIndex + 1).trim(); // Ej: "S62" o "360"
-
-  const modelKey = MODEL_NAME_TO_KEY[modelName];
-
-  if (!modelKey) {
-    console.warn(`Modelo no reconocido en el Sheet: "${modelName}" (fila ignorada)`, row);
-    return null;
-  }
+  const unitNumber = idStr.slice(modelName.length).trim() || "Sin ID";
+  const unitLabel = unitNumber === "Sin ID" ? "Unidad registrada" : `ID: ${unitNumber}`;
 
   return {
-    id: slugify(row.id),
-    model: modelKey,
-    unitLabel: `ID: ${unitNumber}`, 
+    id: slugify(idStr),
+    model: MODEL_NAME_TO_KEY[modelName],
+    unitLabel,
     hoursUsed: Number(row.horasAcumuladas) || 0,
     lastServiceHours: Number(row.ultimoMantenimiento) || 0,
     currentHours: Number(row.horometroActual) || 0,
+    registered: true,
   };
+}
+
+function addMissingModelPlaceholders(registeredUnits) {
+  const registeredModels = new Set(registeredUnits.map((unit) => unit.model));
+  const placeholders = Object.entries(models)
+    .filter(([modelKey]) => !registeredModels.has(modelKey))
+    .map(([modelKey, model]) => ({
+      id: `sin-registrar-${modelKey.toLowerCase()}`,
+      model: modelKey,
+      unitLabel: "Sin unidad registrada",
+      hoursUsed: null,
+      lastServiceHours: null,
+      currentHours: null,
+      registered: false,
+    }));
+
+  return [...registeredUnits, ...placeholders];
 }
 
 /** Carga la flota desde el Apps Script y dibuja las tarjetas. */
@@ -139,7 +131,21 @@ async function loadFleetData() {
     const res = await fetch(API_URL);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const rows = await res.json();
-    units = rows.map(mapApiRowToUnit).filter(Boolean);
+    const localModelKeys = new Set(LOCAL_UNITS.map((unit) => unit.model));
+    const registeredUnits = rows
+      .map(mapApiRowToUnit)
+      .filter(Boolean)
+      .filter((unit) => {
+        const isEmptyModelPlaceholder =
+          unit.unitLabel === "ID: Sin ID" &&
+          unit.currentHours === 0 &&
+          unit.lastServiceHours === 0 &&
+          unit.hoursUsed === 0;
+        return !(isEmptyModelPlaceholder && localModelKeys.has(unit.model));
+      });
+    const registeredModels = new Set(registeredUnits.map((unit) => unit.model));
+    const localUnits = LOCAL_UNITS.filter((unit) => !registeredModels.has(unit.model));
+    units = addMissingModelPlaceholders([...registeredUnits, ...localUnits]);
 
     if (units.length === 0) {
       fleetEl.innerHTML = `<p class="fleet-note fleet-note--error">El Sheet respondió, pero no trajo tractores reconocibles.</p>`;
@@ -152,7 +158,9 @@ async function loadFleetData() {
       <p class="fleet-note fleet-note--error">
         No se pudo cargar la información de los tractores.
         Revisa tu conexión y vuelve a intentar.
-      </p>`;
+      </p>
+      <button class="unit-card__cta" id="retryFleetBtn" type="button">Reintentar</button>`;
+    fleetEl.querySelector("#retryFleetBtn").addEventListener("click", loadFleetData);
   }
 }
 
@@ -160,6 +168,7 @@ const statusText = {
   ok: "Al día",
   proximo: "Servicio próximo",
   urgente: "Servicio urgente",
+  pendiente: "Cronograma pendiente",
 };
 
 /* ============================================================
@@ -188,6 +197,7 @@ const PRIORITY_META = {
 
 function getMaintenanceStatus(unit) {
   const model = models[unit.model];
+  if (!model.maintenanceTasks) return [];
 
   const dueItems = model.maintenanceTasks
     .map((task) => {
@@ -232,7 +242,7 @@ function formatElapsedTime(hours) {
   return `Ha acumulado ${days} ${dayWord} con ${remainingHours} h de trabajo`;
 }
 
-/*/**
+/**
  * Nivel de "salud" del tractor (ya NO depende del tiempo restante
  * para el próximo umbral, sino de las tareas realmente vencidas).
  * Arranca en 100% y se le resta una penalización por cada tarea
@@ -244,6 +254,8 @@ function formatElapsedTime(hours) {
  * el resultado se limita siempre al rango [0, 100].
  */
 function batteryLevel(unit) {
+  if (!models[unit.model].maintenanceTasks) return 0;
+
   const PENALTIES = { warning: 10, urgent: 25, overdue: 40 };
 
   const dueItems = getMaintenanceStatus(unit);
@@ -288,8 +300,12 @@ function renderFleet() {
 
 function unitCardHTML(unit) {
   const model = models[unit.model];
-  const level = batteryLevel(unit);
-  const status = deriveStatus(level);
+  const hasMaintenanceSchedule = Boolean(model.maintenanceTasks);
+  const isRegistered = unit.registered !== false;
+  const localDataNote = unit.localOnly ? " · Registro local, pendiente de guardar en Sheets" : "";
+  const level = isRegistered ? batteryLevel(unit) : 0;
+  const status = isRegistered && hasMaintenanceSchedule ? deriveStatus(level) : "pendiente";
+  const cardStatusText = isRegistered ? statusText[status] : "Sin registrar en Sheet";
 
   // Imagen de referencia del modelo. Si `models[x].image` existe, se usa
   // un <img> a pantalla completa dentro del contenedor; si no, se muestra
@@ -308,39 +324,39 @@ function unitCardHTML(unit) {
   return `
     <article class="unit-card" data-status="${status}" data-unit="${unit.id}"
               tabindex="0" role="button"
-              aria-label="Abrir manual de ${model.label}, ${unit.unitLabel}, ${statusText[status]}">
+              aria-label="Ver estado de ${model.label}, ${unit.unitLabel}, ${cardStatusText}">
 
       <div class="unit-card__media" aria-hidden="true">${mediaHTML}</div>
 
       <div class="unit-card__body">
         <div class="unit-card__headline">
           <div>
-            <p class="unit-card__label">${unit.unitLabel} &middot; Horómetro ${unit.currentHours} h</p>
+            <p class="unit-card__label">${unit.unitLabel}${isRegistered ? ` &middot; Horómetro ${unit.currentHours} h` : ""}</p>
             <h2 class="unit-card__name">Tractor ${model.label}</h2>
           </div>
           <span class="unit-card__model-tag">${model.label}</span>
         </div>
 
-        <p class="unit-card__meta">${model.fullName}</p>
+        <p class="unit-card__meta">${model.fullName}${model.engine ? ` · Motor ${model.engine}` : ""}</p>
 
-        <div class="progress" data-hours-used="${unit.hoursUsed}">
+        <div class="progress"${isRegistered ? ` data-hours-used="${unit.hoursUsed}"` : ""}>
           <div class="progress__bar">
             <span class="progress__icon" aria-hidden="true">&#128668;&#9201;&#65039;</span>
             <div class="progress__track">
-              <div class="progress__fill" style="width:${level}%"></div>
+              <div class="progress__fill" style="width:${isRegistered && hasMaintenanceSchedule ? `${level}%` : "0%"}"></div>
             </div>
-            <span class="progress__pct">${level}%</span>
+            <span class="progress__pct">${isRegistered && hasMaintenanceSchedule ? `${level}%` : "—"}</span>
           </div>
-          <p class="progress__caption">${formatElapsedTime(unit.hoursUsed)}</p>
+          <p class="progress__caption">${!isRegistered ? "Agrega esta unidad a la hoja de datos" : hasMaintenanceSchedule ? `${formatElapsedTime(unit.hoursUsed)}${model.maintenanceNote ? " · Cronograma estimado" : ""}${localDataNote}` : model.maintenanceNote || "Falta cargar el cronograma"}</p>
         </div>
 
         <div class="unit-card__flag unit-card__flag--${status}">
           <span class="status-dot status-dot--${status}" aria-hidden="true"></span>
-          ${statusText[status]}
+          ${cardStatusText}
         </div>
 
         <button class="unit-card__cta" type="button" tabindex="-1">
-          Ver Estado
+          ${isRegistered ? "Ver Estado" : "Registrar unidad"}
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M9 6l6 6-6 6"/>
           </svg>
@@ -365,8 +381,17 @@ function openPriorityModal(unitId) {
   if (!unit) return;
 
   currentUnit = unit;
-  priorityUnitLabelEl.textContent = `${models[unit.model].label} · ${unit.unitLabel}`;
+  const model = models[unit.model];
+  priorityUnitLabelEl.textContent = `${model.label} · ${unit.unitLabel}`;
   priorityBodyEl.innerHTML = renderPriorityBody(unit);
+  const hasManual = model.pages.length > 0;
+  continueToManualBtn.disabled = !hasManual;
+  continueToManualBtn.innerHTML = hasManual
+    ? `${unit.registered === false ? "Consultar manual" : "Continuar a manual"}
+       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
+         <path d="M9 6l6 6-6 6"/>
+       </svg>`
+    : "Manual pendiente";
 
   priorityOverlay.dataset.open = "true";
   priorityOverlay.setAttribute("aria-hidden", "false");
@@ -381,7 +406,29 @@ function closePriorityModal() {
 }
 
 function renderPriorityBody(unit) {
+  if (unit.registered === false) {
+    return `
+      <div class="priority-empty">
+        <p class="priority-empty__text">Este tractor aún no está registrado</p>
+        <p class="priority-empty__hint">Agrega una fila para ${models[unit.model].label} en la hoja de datos para cargar su horómetro y estado de mantenimiento.</p>
+      </div>
+    `;
+  }
+
+  if (!models[unit.model].maintenanceTasks) {
+    return `
+      <div class="priority-empty">
+        <p class="priority-empty__text">Cronograma de mantenimiento pendiente</p>
+        <p class="priority-empty__hint">${models[unit.model].maintenanceNote || "Agrega el manual o los intervalos oficiales para consultar las tareas."}</p>
+      </div>
+    `;
+  }
+
   const dueItems = getMaintenanceStatus(unit);
+  const maintenanceNote = models[unit.model].maintenanceNote;
+  const localDataNote = unit.localOnly
+    ? `<p class="priority-list__note">Lecturas locales; aún no están guardadas en Google Sheets.</p>`
+    : "";
 
   // Estado 1: nada vencido todavía
   if (dueItems.length === 0) {
@@ -393,6 +440,8 @@ function renderPriorityBody(unit) {
         </svg>
         <p class="priority-empty__text">Tractor en buen mantenimiento</p>
         <p class="priority-empty__hint">${formatElapsedTime(unit.hoursUsed)} &middot; sin tareas vencidas</p>
+        ${maintenanceNote ? `<p class="priority-empty__hint">${maintenanceNote}</p>` : ""}
+        ${localDataNote}
       </div>
     `;
   }
@@ -406,7 +455,7 @@ function renderPriorityBody(unit) {
           <span class="priority-item__icon" aria-hidden="true">${meta.icon}</span>
           <div class="priority-item__body">
             <p class="priority-item__name">${item.name}</p>
-            <p class="priority-item__meta">Pág ${item.page} &middot; ${formatElapsedTime(unit.hoursUsed)}</p>
+            <p class="priority-item__meta">${item.page ? `Pág ${item.page}` : "Intervalo estimado · sin referencia oficial"} &middot; ${formatElapsedTime(unit.hoursUsed)}</p>
           </div>
           <span class="priority-item__badge">${meta.label}</span>
         </li>
@@ -417,6 +466,8 @@ function renderPriorityBody(unit) {
   return `
     <ul class="priority-list">${itemsHTML}</ul>
     <p class="priority-list__note">${formatElapsedTime(unit.hoursUsed)}</p>
+    ${localDataNote}
+    ${maintenanceNote ? `<p class="priority-empty__hint">${maintenanceNote}</p>` : ""}
   `;
 }
 
@@ -441,11 +492,16 @@ const pageTotalEl = document.getElementById("pageTotal");
 function openManual() {
   if (!currentUnit) return;
   const model = models[currentUnit.model];
+  if (model.pages.length === 0) return;
 
   currentPage = 0;
 
-  titleEl.textContent = `Manual — Tractor ${model.label}`;
-  unitLabelEl.textContent = `${currentUnit.unitLabel} · Horómetro ${currentUnit.currentHours} h`;
+  titleEl.textContent = model.manualTitle
+    ? `Manual — ${model.manualTitle}`
+    : `Manual — Tractor ${model.label}`;
+  unitLabelEl.textContent = currentUnit.registered === false
+    ? `${currentUnit.unitLabel} · Consulta general`
+    : `${currentUnit.unitLabel} · Horómetro ${currentUnit.currentHours} h`;
   pageTotalEl.textContent = model.pages.length;
 
   renderPage();

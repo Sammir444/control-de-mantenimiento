@@ -1,4 +1,4 @@
-
+ 
 :root {
   --bg: #1c1e1a;
   --panel: #262922;
@@ -138,6 +138,7 @@ button {
 .unit-card[data-status="ok"]        { border-left-color: var(--ok); }
 .unit-card[data-status="proximo"]   { border-left-color: var(--proximo); }
 .unit-card[data-status="urgente"]   { border-left-color: var(--urgente); }
+.unit-card[data-status="pendiente"] { border-left-color: var(--text-muted); }
 
 .unit-card:active { transform: scale(0.985); }
 .unit-card:hover  { border-color: var(--accent); }
@@ -304,6 +305,7 @@ button {
 .unit-card[data-status="proximo"] .progress__pct      { color: var(--proximo); background-color: var(--proximo); }
 .unit-card[data-status="urgente"] .progress__fill,
 .unit-card[data-status="urgente"] .progress__pct      { color: var(--urgente); background-color: var(--urgente); }
+.unit-card[data-status="pendiente"] .progress__pct    { color: var(--text-muted); }
 
 /* background-color no debe heredarse al texto del porcentaje, solo a la barra */
 .progress__pct { background-color: transparent !important; }
@@ -329,6 +331,7 @@ button {
 .unit-card__flag--ok       { background: var(--ok-bg);      color: var(--ok); }
 .unit-card__flag--proximo  { background: var(--proximo-bg); color: var(--proximo); }
 .unit-card__flag--urgente  { background: var(--urgente-bg); color: var(--urgente); }
+.unit-card__flag--pendiente { background: var(--panel-raised); color: var(--text-muted); }
 
 .unit-card__cta {
   display: flex;
@@ -344,6 +347,12 @@ button {
   font-weight: 700;
   font-size: 0.95rem;
   width: 100%;
+}
+
+.unit-card__cta:disabled {
+  background: var(--panel-raised);
+  color: var(--text-muted);
+  cursor: not-allowed;
 }
 
 /* ============================================================
@@ -362,6 +371,7 @@ button {
 .status-dot--ok       { background: var(--ok); }
 .status-dot--proximo  { background: var(--proximo); }
 .status-dot--urgente  { background: var(--urgente); animation: pulse-urgente 1.8s ease-in-out infinite; }
+.status-dot--pendiente { background: var(--text-muted); }
 
 @keyframes pulse-urgente {
   0%, 100% { box-shadow: 0 0 0 0 rgba(224, 80, 61, 0.5); }
